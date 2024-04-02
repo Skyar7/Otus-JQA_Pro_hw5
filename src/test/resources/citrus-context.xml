@@ -25,9 +25,17 @@
         <citrus:file path="classpath:citrus.properties"/>
     </citrus:global-variables>
 
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <property name="serializationInclusion" value="NON_NULL"/>
+    </bean>
+
     <citrus-http:client id="restClientReqres"
-                        request-url="${url}"
+                        request-url="${urlRestReqres}"
                         content-type="application/json"
                         timeout="15000"/>
+
+<!--    <citrus-ws:client id="soapClientNumbConvServ"-->
+<!--                      request-url="${urlSoapNumbConvServ}"-->
+<!--                      timeout="15000"/>-->
     	
 </beans>
