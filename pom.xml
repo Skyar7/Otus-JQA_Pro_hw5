@@ -14,7 +14,18 @@
     <citrus.version>3.2.1</citrus.version>
     <slf4j.version>1.7.30</slf4j.version>
     <log4j2.version>2.15.0</log4j2.version>
-    <jakarta.version>2.3.2</jakarta.version>
+    <jakarta.xml.ws-api.version>2.3.2</jakarta.xml.ws-api.version>
+    <jaxws-api.version>2.3.1</jaxws-api.version>
+    <jaxws-ri.version>2.3.3</jaxws-ri.version>
+
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+    <cxf-codegen-plugin.version>3.3.4</cxf-codegen-plugin.version>
+    <spotbugs-maven-plugin.version>4.8.2.0</spotbugs-maven-plugin.version>
+    <spotbugs.version>4.8.3</spotbugs.version>
+    <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
+
   </properties>
 
   <dependencies>
@@ -23,56 +34,79 @@
       <artifactId>citrus-core</artifactId>
       <version>${citrus.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-jms</artifactId>
       <version>${citrus.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-ws</artifactId>
       <version>${citrus.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-http</artifactId>
       <version>${citrus.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-testng</artifactId>
       <version>${citrus.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-validation-json</artifactId>
       <version>${citrus.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
       <version>${log4j2.version}</version>
     </dependency>
+
     <dependency>
       <groupId>jakarta.xml.ws</groupId>
       <artifactId>jakarta.xml.ws-api</artifactId>
-      <version>${jakarta.version}</version>
+      <version>${jakarta.xml.ws-api.version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.xml.ws</groupId>
+      <artifactId>jaxws-api</artifactId>
+      <version>${jaxws-api.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-ri</artifactId>
+      <version>${jaxws-ri.version}</version>
+      <type>pom</type>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
+
       <plugin>
         <groupId>com.consol.citrus.mvn</groupId>
         <artifactId>citrus-maven-plugin</artifactId>
@@ -81,27 +115,30 @@
 <!--            <targetPackage>ru.otus</targetPackage>-->
         </configuration>
       </plugin>
+
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
           <source>${java.version}</source>
           <target>${java.version}</target>
         </configuration>
       </plugin>
+
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
+        <version>${maven-surefire-plugin.version}</version>
         <configuration>
           <failIfNoTests>false</failIfNoTests>
           <workingDirectory>${project.build.directory}</workingDirectory>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.2</version>
+        <version>${maven-failsafe-plugin.version}</version>
         <executions>
           <execution>
             <id>integration-tests</id>
@@ -112,6 +149,61 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-codegen-plugin</artifactId>
+        <version>3.3.4</version>
+        <executions>
+          <execution>
+            <id>generate-sources-api</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <sourceRoot>${basedir}/src/test/java</sourceRoot>
+              <wsdlOptions>
+                <wsdlOption>
+                  <wsdl>https://www.dataaccess.com/webservicesserver/numberconversion.wso?WSDL</wsdl>
+                </wsdlOption>
+              </wsdlOptions>
+            </configuration>
+            <goals>
+              <goal>wsdl2java</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--        <version>${maven-checkstyle-plugin.version}</version>-->
+<!--        <configuration>-->
+<!--          <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
+<!--          <configLocation>${project.build.sourceDirectory}/../resources/checkstyle.xml</configLocation>-->
+<!--        </configuration>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>analyze-compile</id>-->
+<!--            <phase>compile</phase>-->
+<!--            <goals>-->
+<!--              <goal>check</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
+
+<!--      <plugin>-->
+<!--        <groupId>com.github.spotbugs</groupId>-->
+<!--        <artifactId>spotbugs-maven-plugin</artifactId>-->
+<!--        <version>${spotbugs-maven-plugin.version}</version>-->
+<!--        <dependencies>-->
+<!--          <dependency>-->
+<!--            <groupId>com.github.spotbugs</groupId>-->
+<!--            <artifactId>spotbugs</artifactId>-->
+<!--            <version>${spotbugs.version}</version>-->
+<!--          </dependency>-->
+<!--        </dependencies>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 </project>

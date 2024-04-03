@@ -8,7 +8,7 @@ import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class CustomMarshaller<T> {
+public class MarshallerPojoToXML<T> {
   public T generic;
 
   public String convert(T requestClass, Object requestData, String namespaseURI, String localPart) { //namespaseURI=http://oms.rt.ru/ , localPart=submitOrderRequest
