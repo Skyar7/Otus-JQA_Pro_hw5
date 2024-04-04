@@ -54,11 +54,11 @@ public class CreateUserResponseDTO {
 
   @Override
   public String toString() {
-    return "CreateUserResponse{" +
-            "name='" + name + '\'' +
-            ", job='" + job + '\'' +
-            ", id='" + id + '\'' +
-            ", createdAt='" + createdAt + '\'' +
-            '}';
+    return "CreateUserResponse{"
+            + "name='" + name + '\''
+            + ", job='" + job + '\''
+            + ", id='" + id + '\''
+            + ", createdAt='" + createdAt + '\''
+            + '}';
   }
 }

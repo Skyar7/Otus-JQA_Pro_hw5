@@ -1,5 +1,8 @@
 package api.helpers;
 
+import static com.consol.citrus.dsl.JsonPathSupport.jsonPath;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
 import api.pojo.CreateUserRequestDTO;
 import api.pojo.CreateUserResponseDTO;
 import com.consol.citrus.annotations.CitrusTest;
@@ -11,14 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.dsl.JsonPathSupport.jsonPath;
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-
 public class RestHelper_Test extends TestNGCitrusSupport {
 
   @Test(description = "Получение информации о пользователях", dataProvider = "usersProvider")
   @CitrusTest
-  public void getUsersTest(String id, String name, String lastname ) {
+  public void getUsersTest(String id, String name, String lastname) {
 
     run(http()
             .client("restClientReqres")
@@ -41,18 +41,18 @@ public class RestHelper_Test extends TestNGCitrusSupport {
   @DataProvider(name = "usersProvider")
   public Object[][] getProvider() {
     return new Object[][]{
-            new Object[]{"1","George", "Bluth"},
-            new Object[]{"2","Janet", "Weaver"},
-            new Object[]{"3","Emma", "Wong"},
-            new Object[]{"4","Eve", "Holt"},
-            new Object[]{"5","Charles", "Morris"},
-            new Object[]{"6","Tracey", "Ramos"},
-            new Object[]{"7","Michael", "Lawson"},
-            new Object[]{"8","Lindsay", "Ferguson"},
-            new Object[]{"9","Tobias", "Funke"},
-            new Object[]{"10","Byron", "Fields"},
-            new Object[]{"11","George", "Edwards"},
-            new Object[]{"12","Rachel", "Howell"},
+      new Object[]{"1","George", "Bluth"},
+      new Object[]{"2","Janet", "Weaver"},
+      new Object[]{"3","Emma", "Wong"},
+      new Object[]{"4","Eve", "Holt"},
+      new Object[]{"5","Charles", "Morris"},
+      new Object[]{"6","Tracey", "Ramos"},
+      new Object[]{"7","Michael", "Lawson"},
+      new Object[]{"8","Lindsay", "Ferguson"},
+      new Object[]{"9","Tobias", "Funke"},
+      new Object[]{"10","Byron", "Fields"},
+      new Object[]{"11","George", "Edwards"},
+      new Object[]{"12","Rachel", "Howell"},
     };
   }
 

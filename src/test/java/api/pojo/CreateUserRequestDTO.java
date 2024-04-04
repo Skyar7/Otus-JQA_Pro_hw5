@@ -32,9 +32,9 @@ public class CreateUserRequestDTO {
 
   @Override
   public String toString() {
-    return "CreateUserRequest{" +
-            "name='" + name + '\'' +
-            ", job='" + job + '\'' +
-            '}';
+    return "CreateUserRequest{"
+            + "name='" + name + '\''
+            + ", job='" + job + '\''
+            + '}';
   }
 }
