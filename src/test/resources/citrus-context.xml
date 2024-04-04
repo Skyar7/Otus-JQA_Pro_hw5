@@ -40,12 +40,12 @@
         </property>
     </bean>
 
-    <!--For SOAP 1.2-->
-    <!--    <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory">-->
-    <!--      <property name="soapVersion">-->
-    <!--        <util:constant static-field="org.springframework.ws.soap.SoapVersion.SOAP_12"/>-->
-    <!--      </property>-->
-    <!--    </bean>-->
+<!--    For SOAP 1.2-->
+<!--        <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory">-->
+<!--          <property name="soapVersion">-->
+<!--            <util:constant static-field="org.springframework.ws.soap.SoapVersion.SOAP_12"/>-->
+<!--          </property>-->
+<!--        </bean>-->
 
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
         <property name="serializationInclusion" value="NON_NULL"/>
@@ -54,19 +54,9 @@
     <citrus-http:client id="restClientReqres"
                         request-url="${urlReqres}"
                         content-type="application/json"
-                        timeout="15000"/>
+                        timeout="20000"/>
 
     <citrus-ws:client id="soapClientNumbConvServ"
                       request-url="${urlNumbConvServ}"
-                      timeout="15000"/>
-
-    <citrus-http:client id="restClientMock"
-                        request-url="${urlMock}"
-                        content-type="application/json"
-                        timeout="15000"/>
-
-    <citrus-http:server id="restServerMock"
-                        port="5555"
-                        auto-start="true"
-                        timeout="15000"/>
+                      timeout="20000"/>
 </beans>

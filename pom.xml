@@ -25,7 +25,7 @@
     <spotbugs-maven-plugin.version>4.8.2.0</spotbugs-maven-plugin.version>
     <spotbugs.version>4.8.3</spotbugs.version>
     <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
-
+    <spring.maven.plugin.version>2.6.3</spring.maven.plugin.version>
   </properties>
 
   <dependencies>
@@ -101,6 +101,12 @@
       <artifactId>jaxws-ri</artifactId>
       <version>${jaxws-ri.version}</version>
       <type>pom</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+      <version>3.0.1</version>
     </dependency>
   </dependencies>
 

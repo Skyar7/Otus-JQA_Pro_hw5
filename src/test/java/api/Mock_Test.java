@@ -1,82 +1,85 @@
 package api;
 
-//import com.consol.citrus.annotations.CitrusTest;
-//import com.consol.citrus.context.TestContext;
-//import com.consol.citrus.message.builder.ObjectMappingPayloadBuilder;
-//import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-//import org.springframework.http.HttpStatus;
-//import org.testng.annotations.Test;
-//
-//import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-//
-//public class Mock_Test extends TestNGCitrusSpringSupport {
-//
-//
-//  public TestContext context;
-//
-//  @Test(description = "МОК", enabled = true)
-//  @CitrusTest
-//  public void getTestActions() {
-//    this.context = citrus.getCitrusContext().createTestContext();
-//
-//    run(http()
-//            .client("restClientMock")
-//            .send()
-//            .get("users/" + context.getVariable("userId"))
-//            .fork(true)
-//    );
-//
-//    run(http()
-//            .server("restServerMock")
-//            .receive()
-//            .get());
-//
-//    run(http()
-//            .server("restServerMock")
-//            .send()
-//            .response()
-//            .message()
-//            .type("application/json")
-//            .body("{\n" +
-//                    "    \"data\": {\n" +
-//                    "        \"id\": ${userId},\n" +
-//                    "        \"email\": \"janet.weaver@reqres.in\",\n" +
-//                    "        \"first_name\": \"Janet\",\n" +
-//                    "        \"last_name\": \"Weaver\",\n" +
-//                    "        \"avatar\": \"https://reqres.in/img/faces/2-image.jpg\"\n" +
-//                    "    },\n" +
-//                    "    \"support\": {\n" +
-//                    "        \"url\": \"https://reqres.in/#support-heading\",\n" +
-//                    "        \"text\": \"To keep ReqRes free, contributions towards server costs are appreciated!\"\n" +
-//                    "    }\n" +
-//                    "}"));
-//
-//    run(http().client("restClientMock")
-//            .receive()
-//            .response(HttpStatus.OK)
-//            .message()
-//            .type("application/json")
-//            .body(new ObjectMappingPayloadBuilder(getJsonData(), "objectMapper"))
-//    );
-//  }
-//
-//  public User getJsonData() {
-//    User user = new User();
-//
-//    Data data = new Data();
-//    data.setId(Integer.valueOf(context.getVariable("userId")));
-//    data.setEmail("janet.weaver@reqres.in");
-//    data.setFirstName("Janet");
-//    data.setLastName("Weaver");
-//    data.setAvatar("https://reqres.in/img/faces/2-image.jpg");
-//    user.setData(data);
-//
-//    Support support = new Support();
-//    support.setUrl("https://reqres.in/#support-heading");
-//    support.setText("To keep ReqRes free, contributions towards server costs are appreciated!");
-//
-//    user.setSupport(support);
-//
-//    return user;
-//  }
-//}
+import api.pojo.MockCourseDTO;
+import api.pojo.MockUserDTO;
+import api.pojo.MockUserScoreDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Scanner;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+
+public class Mock_Test {
+  private static final WireMockServer wireMockServer = new WireMockServer();
+
+  @BeforeClass
+  public static void startWireMock() {
+    wireMockServer.start();
+    configureFor(wireMockServer.port());
+  }
+
+  @AfterClass
+  public static void stopWireMock() {
+    wireMockServer.stop();
+  }
+
+  @Test
+  public void wiremockTest() throws IOException {
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // Создание заглушек.
+
+    MockUserScoreDTO score = new MockUserScoreDTO("Test user", 78);
+    MockCourseDTO course1 = new MockCourseDTO("QA java", 15000);
+    MockCourseDTO course2 = new MockCourseDTO("Java", 12000);
+    MockUserDTO user = new MockUserDTO("Test user", "QA", "test@test.test", 23);
+
+    stubFor(get(urlPathEqualTo("/user/get/1"))
+            .willReturn(aResponse()
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(objectMapper.writeValueAsString(score))
+                    .withStatus(200)));
+
+    stubFor(get(urlPathEqualTo("/cource/get/all"))
+            .willReturn(aResponse()
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(objectMapper.writeValueAsString(Arrays.asList(course1, course2)))
+                    .withStatus(200)));
+
+    stubFor(get(urlPathEqualTo("/user/get/all"))
+            .willReturn(aResponse()
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(objectMapper.writeValueAsString(Arrays.asList(user)))
+                    .withStatus(200)));
+
+    // Проверка работы заглушек
+
+    CloseableHttpClient httpClient = HttpClients.createDefault();
+
+    HttpGet request = new HttpGet(String.format("%s/cource/get/all", "http://localhost:8080"));
+    HttpResponse httpResponse = httpClient.execute(request);
+    String responseString = convertResponseToString(httpResponse);
+    System.out.println("С чем сравниваем: " + objectMapper.writeValueAsString(Arrays.asList(course1, course2)));
+    System.out.println("Реальный ответ: " + responseString);
+  }
+
+  private String convertResponseToString(HttpResponse response) throws IOException {
+    InputStream responseStream = response.getEntity().getContent();
+    Scanner scanner = new Scanner(responseStream, "UTF-8");
+    String responseString = scanner.useDelimiter("\\Z").next();
+    scanner.close();
+    return responseString;
+  }
+}
