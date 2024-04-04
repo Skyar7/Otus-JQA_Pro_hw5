@@ -68,7 +68,7 @@ public class RestHelper_Test extends TestNGCitrusSupport {
             .post("users")
             .message()
             .type("application/json")
-            .body(new ObjectMappingPayloadBuilder(getRequestData(name, job),"objectMapper"))
+            .body(new ObjectMappingPayloadBuilder(getRequestData(name, job), "objectMapper"))
     );
 
     run(http()

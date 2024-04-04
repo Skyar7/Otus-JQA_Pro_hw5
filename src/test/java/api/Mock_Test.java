@@ -84,28 +84,18 @@ public class Mock_Test {
 
     // Проверка работы заглушек.
 
+    mockGetMethodChecking(scorePath, scoreStatus, scoreJson);
+    mockGetMethodChecking(coursePath, courseStatus, courseJson);
+    mockGetMethodChecking(userPath, userStatus, userJson);
+  }
+
+  private void mockGetMethodChecking(String path, int status, String body) throws IOException {
     CloseableHttpClient httpClient = HttpClients.createDefault();
-    HttpGet request;
-    HttpResponse httpResponse;
-    String responseString;
-
-    request = new HttpGet("http://" + MOCK_HOST + ":" + MOCK_HOST_PORT + scorePath);
-    httpResponse = httpClient.execute(request);
-    responseString = convertResponseToString(httpResponse);
-    Assert.assertEquals(scoreStatus, httpResponse.getStatusLine().getStatusCode());
-    Assert.assertEquals(scoreJson, responseString);
-
-    request = new HttpGet("http://" + MOCK_HOST + ":" + MOCK_HOST_PORT + coursePath);
-    httpResponse = httpClient.execute(request);
-    responseString = convertResponseToString(httpResponse);
-    Assert.assertEquals(courseStatus, httpResponse.getStatusLine().getStatusCode());
-    Assert.assertEquals(courseJson, responseString);
-
-    request = new HttpGet("http://" + MOCK_HOST + ":" + MOCK_HOST_PORT + userPath);
-    httpResponse = httpClient.execute(request);
-    responseString = convertResponseToString(httpResponse);
-    Assert.assertEquals(userStatus, httpResponse.getStatusLine().getStatusCode());
-    Assert.assertEquals(userJson, responseString);
+    HttpGet request = new HttpGet("http://" + MOCK_HOST + ":" + MOCK_HOST_PORT + path);
+    HttpResponse httpResponse = httpClient.execute(request);
+    String responseString = convertResponseToString(httpResponse);
+    Assert.assertEquals(status, httpResponse.getStatusLine().getStatusCode());
+    Assert.assertEquals(body, responseString);
   }
 
   private String convertResponseToString(HttpResponse response) throws IOException {
@@ -113,6 +103,7 @@ public class Mock_Test {
     Scanner scanner = new Scanner(responseStream, "UTF-8");
     String responseString = scanner.useDelimiter("\\Z").next();
     scanner.close();
+
     return responseString;
   }
 }
