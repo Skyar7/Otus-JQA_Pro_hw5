@@ -3,8 +3,8 @@ package api.helpers;
 import static com.consol.citrus.dsl.JsonPathSupport.jsonPath;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
-import api.pojo.CreateUserRequestDTO;
-import api.pojo.CreateUserResponseDTO;
+import pojo.CreateUserRequestDTO;
+import pojo.CreateUserResponseDTO;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.message.builder.ObjectMappingPayloadBuilder;

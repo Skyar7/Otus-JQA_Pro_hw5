@@ -1,4 +1,4 @@
-package api.features;
+package features;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;

@@ -165,7 +165,7 @@
             <id>generate-sources-api</id>
             <phase>generate-sources</phase>
             <configuration>
-              <sourceRoot>${basedir}/src/test/java</sourceRoot>
+              <sourceRoot>${basedir}/src/main/java</sourceRoot>
               <wsdlOptions>
                 <wsdlOption>
                   <wsdl>https://www.dataaccess.com/webservicesserver/numberconversion.wso?WSDL</wsdl>
@@ -185,7 +185,7 @@
         <version>${maven-checkstyle-plugin.version}</version>
         <configuration>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          <configLocation>${project.basedir}/src/test/java/../resources/checkstyle.xml</configLocation>
+          <configLocation>${project.build.sourceDirectory}/../resources/checkstyle.xml</configLocation>
           <excludes>**/com/dataaccess/webservicesserver/**</excludes>
         </configuration>
         <executions>

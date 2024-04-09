@@ -1,4 +1,4 @@
-package api.pojo;
+package pojo;
 
 public class MockUserScoreDTO {
   private String name;

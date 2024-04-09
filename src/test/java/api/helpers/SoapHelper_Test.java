@@ -2,7 +2,7 @@ package api.helpers;
 
 import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
 
-import api.features.MarshallerPojoToXML;
+import features.MarshallerPojoToXML;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.dataaccess.webservicesserver.NumberToDollars;

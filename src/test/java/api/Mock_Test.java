@@ -2,9 +2,9 @@ package api;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-import api.pojo.MockCourseDTO;
-import api.pojo.MockUserDTO;
-import api.pojo.MockUserScoreDTO;
+import pojo.MockCourseDTO;
+import pojo.MockUserDTO;
+import pojo.MockUserScoreDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.apache.http.HttpResponse;
