@@ -1,4 +1,4 @@
-timeout(60) {
+timeout(15) {
     node("maven") {
         wrap([$class: 'BuildUser']) {
             currentBuild.description = """
@@ -22,7 +22,7 @@ branch: ${REFSPEC}
         }
         stage("Run mock tests") {
             sh "mkdir ./reports"
-            sh "docker run --rm --env-file -v ./reports:root/mock_tests_allure-results ./.env -t mock_tests:${env.getProperty('TEST_VERSION')}"
+            sh "docker run --rm --network=host --env-file ./.env -v ./reports:root/mock_tests_allure-results -t localhost:5005/mock_tests:${env.getProperty('TEST_VERSION')}"
         }
         stage("Publish allure results") {
             REPORT_DISABLE = Boolean.parseBoolean(env.getProperty('REPORT_DISABLE')) ?: false
