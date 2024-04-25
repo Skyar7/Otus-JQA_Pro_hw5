@@ -1,3 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-mvn test
+command="mvn test"
+
+echo "Run: " $command
+eval $command
+echo "End of running: " $command
